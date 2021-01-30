@@ -8,14 +8,37 @@ class Video:
         self.title = 'downloads/' + title
         self.targetname = ''
 
-    def CutVideo(self, start_time, end_time, targetname):
+    def calculate_time_inputs(self, time):
+
+        time = time.split(':')
+
+        time_hours = int(time[0])
+        time_minutes = int(time[1])
+        time_secs = int(time[2])
+
+        time_hours = time_hours * 3600
+        time_minutes = time_minutes * 60
+
+        total_time = time_hours + time_minutes + time_secs
+
+        return total_time
+
+    def cut_video(self, time_ini, time_end, targetname):
+
+        time_ini = self.calculate_time_inputs(time_ini)
+        time_end = self.calculate_time_inputs(time_end)
 
         targetname = 'cuts/' + targetname
 
         self.targetname = targetname
         
-        ffmpeg_extract_subclip(self.title, start_time, end_time, targetname=targetname)
+        ffmpeg_extract_subclip(self.title, time_ini, time_end, targetname=targetname)
 
+class Image(Video):
+
+    def __init(self, targetname):
+
+        super().__init__(targetname)
 
     def CutImage(self, frame, name):
 

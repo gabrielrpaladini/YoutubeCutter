@@ -1,79 +1,47 @@
-import pandas as pd
 from downloadvid import DownloadVideo
-from video import Video
+from video import Video, Image
 import os
+import sys
+from directory import Directory
 
-# Ask if file exists
+if __name__ == "__main__":
 
-file_y_n = str(input('File exists: (n/y): ')).upper()
+    if len(sys.argv) < 2:
 
-if file_y_n == 'Y':
+        raise ValueError('System Parameters are required')
 
-    files_list = os.listdir('downloads/')
+    paths = Directory()
 
-    for i in range(len(files_list)):
+    paths.create_directory()
 
-        print('Press {} to {}: '.format(i, files_list[i]))
+    exists_video = sys.argv[1]
 
-    file_number = int(input('Number: '))
+    if exists_video == '-u':
 
-    video_title = files_list[i]
+        url_target = sys.argv[2]
 
-    video_title = str(video_title).replace('.mp4', '')
+        download_utils = DownloadVideo(url_target)
+        
+        print('Start a download...')
 
-    print('*** video title: {}'.format(video_title))
+        download_utils.download()
 
-else:
+        print('video downloaded...')
 
-    # Ask url
+        video_title = download_utils.returntitle()
 
-    url_target = str(input('Url youtube: '))
+    elif exists_video == '-n':
 
-    # Instance download class
+        video_title = sys.argv[2]
+        video_title = str(video_title).replace('.mp4', '')
 
-    download_utils = DownloadVideo(url_target)
+    time_ini = sys.argv[3]
+    time_end = sys.argv[4]
 
-    print('*** starting download')
+    targetname = sys.argv[5]+'.mp4'
 
-    download_utils.download()
+    video_utils = Video(video_title+'.mp4')
 
-    print('*** video downloaded')
+    video_utils.cut_video(time_ini, time_end, targetname)
 
-    video_title = download_utils.returntitle()
-
-    print('*** video title: {}'.format(video_title))
-
-video_utils = Video(video_title+'.mp4')
-
-start_time_hours = float(input('When the cut starts (Hours): '))
-start_time_minutes = float(input('When the cut starts (Minutes): '))
-start_time_secs = float(input('When the cut starts (Seconds): '))
-
-start_time_hours = start_time_hours * 3600
-start_time_minutes = start_time_minutes * 60
-
-start_time = start_time_hours + start_time_minutes + start_time_secs
-
-end_time_hours = float(input('When the cut ends (Hours): '))
-end_time_minutes = float(input('When the cut ends (Minutes): '))
-end_time_secs = float(input('When the cut ends (Seconds): '))
-
-end_time_hours = end_time_hours * 3600
-end_time_minutes = end_time_minutes * 60
-
-end_time = end_time_hours + end_time_minutes + end_time_secs
-
-targetname = str(input('Name the exit file: ')) + '.mp4'
-
-video_utils.CutVideo(start_time, end_time, targetname)
-
-print('*** cut video')
-
-frame_cut = int(input('*** Insert frame to cut image: '))
-image_name = str(input('*** Insert image name: '))
-
-image_name = 'thumbnail_'+image_name
-
-video_utils.CutImage(frame_cut, image_name)
-
-print('*** {} created'.format(image_name))
+    print(f'Video {video_title} cutted.')
