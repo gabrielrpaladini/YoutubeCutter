@@ -5,15 +5,17 @@
 ### Install requirementes:
 > pip install -r requirements
 
-### USAGE:
+### Usage:
 > -u for youtube url --> next: insert the url
 > -----
 > -n if you already have the video downloaded --> next: insert name of the video
+> -----
 
-### CODE EXAMPLE:
+### Code example:
 
 > python app.py -u https://www.youtube.com/watch?v=NImeDE7ZM0E 0:0:3 0:0:7 output
 > -----
 > python app.py -u 'url' 'start' 'end' 'output name'
+> -----
 
 
